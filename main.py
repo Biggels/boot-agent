@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 
 def main():
@@ -15,10 +16,12 @@ def main():
     parser.add_argument("user_prompt", type=str, help="User prompt")
     args = parser.parse_args()
 
+    messages = [types.Content(role="user", parts=[types.Part(text=args.user_prompt)])]
+
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
         model="gemini-3-flash-preview",
-        contents=args.user_prompt,
+        contents=messages,
     )
     if not response.usage_metadata:
         raise RuntimeError(

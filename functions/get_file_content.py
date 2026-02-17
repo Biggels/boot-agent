@@ -1,5 +1,7 @@
 import os
 
+from google.genai import types
+
 from config import MAX_FILE_READ_SIZE
 
 
@@ -25,3 +27,19 @@ def get_file_content(working_directory, file_path):
         return file_content
     except Exception as err:
         return f"Error: {err}"
+
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description=f"Read the first {MAX_FILE_READ_SIZE} characters of a file. If a file is larger than that, a truncation note is appended to the end of the response.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Path to file to read, relative to the working directory.",
+            ),
+        },
+        required=["file_path"],
+    ),
+)

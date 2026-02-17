@@ -27,7 +27,7 @@ def main():
         model="gemini-3-flash-preview",
         contents=messages,
         config=types.GenerateContentConfig(
-            tools=[available_functions], system_instruction=system_prompt
+            tools=[available_functions], system_instruction=system_prompt, temperature=0
         ),
     )
     if not response.usage_metadata:
